@@ -1,1 +1,49 @@
 # Business-Analytic-MyProject-SQL
+/* Query 1 */
+
+SELECT mt.Name, COUNT(il.TrackId) AS "total purchase"
+FROM MediaType mt, Track t, InvoiceLine il 
+WHERE mt.MediaTypeId == t.MediaTypeId 
+AND t.TrackId == il.TrackId 
+GROUP BY mt.Name 
+ORDER BY COUNT(il.TrackId) DESC 
+LIMIT 3;
+
+
+/* Query 2*/
+
+SELECT G.NAME as "Name music",COUNT(T.TRACKID)as "Total music store"
+FROM Track t 
+JOIN Genre g ON t.GENREID = g.GENREID
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+
+/* Query 3 */
+
+SELECT r.Name, COUNT(*) "Number of tracks"
+FROM Artist r
+JOIN Album a
+ON r.ArtistId = a.ArtistId
+JOIN Track t
+ON t.AlbumId = a.AlbumId
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+
+/* Query 4 */
+
+SELECT g.Name AS "Genre type", c.Country, SUM(il.UnitPrice * quantity) AS "total price"
+FROM Genre g
+JOIN Track t
+ON g.GenreId = t.GenreId
+JOIN InvoiceLine il
+ON t.TrackId = il.TrackId
+JOIN Invoice i
+ON i.InvoiceId = il.InvoiceId
+JOIN Customer c
+ON c.CustomerId = i.CustomerId
+WHERE c.Country = "Canada"
+GROUP BY 1, 2
+ORDER BY 3 DESC
+LIMIT 5;
